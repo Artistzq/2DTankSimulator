@@ -6,16 +6,18 @@ using System;
 
 public class Tank : MonoBehaviour 
 {
-	public float x;
-	public float y;
 	// public GameObject tank;
-	public Rigidbody2D rigidbodyTank;
-	public Vector3 movement;
+	[Header("控制者")]
+	public Ctrller ctrller;		//是否为玩家
+	public float Health = 100;
+	Vector3 movement;
+	[Header("移动速度")]
 	public float moveSpeed;
+	[Header("旋转速度")]
 	public Vector3 rotateSpeed = new Vector3(0,0,1);
-	public Vector3 force;
-
-	// Use this for initialization
+	// public Vector3 force;
+	
+	Rigidbody2D rigidbodyTank;
 	void Start () 
 	{
 		// tank = GameObject.Find("Tank");
@@ -24,22 +26,40 @@ public class Tank : MonoBehaviour
 	
 	private void FixedUpdate() 
 	{
-		float rotate = -Input.GetAxis("Horizontal");	//返回-1到1的实数值,水平按键AD代表旋转量
-		float move = Input.GetAxis("Vertical");			//WS代表移动量
+		switch (ctrller)
+		{
+			case Ctrller.player:		//1号玩家坦克操控，键盘+鼠标操控
+				//移动设定
+				float rotate = -Input.GetAxis("Horizontal1");	//返回-1到1的实数值,水平按键AD代表旋转量
+				float move = Input.GetAxis("Vertical1");			//WS代表移动量
+				Move(rotate, move);
+			break;
 
-		this.transform.Rotate(0, 0, rotate * rotateSpeed.z);          //旋转
-				
+			case Ctrller.wingman: 
+				float rotate2 = -Input.GetAxis("Horizontal2");	//返回-1到1的实数值,水平按键AD代表旋转量
+				float move2 = Input.GetAxis("Vertical2");			//WS代表移动量
+				Move(rotate2, move2);
+			break;
+		}	
+	}
+
+	private void Move(float _rotate, float _move)
+	{
+		this.transform.Rotate(0, 0, _rotate * rotateSpeed.z);	//简单旋转				
 		movement = new Vector3(
-			move * moveSpeed * (float)Math.Cos(Math.PI * this.transform.rotation.eulerAngles.z / 180),
-			move * moveSpeed * (float)Math.Sin(Math.PI * this.transform.rotation.eulerAngles.z / 180),
+			_move * moveSpeed * (float)Math.Cos(Math.PI * this.transform.rotation.eulerAngles.z / 180),
+			_move * moveSpeed * (float)Math.Sin(Math.PI * this.transform.rotation.eulerAngles.z / 180),
 			0
 		);
-		// rigidbodyTank.AddForce(new Vector2(movement.x, movement.y));
-
 		rigidbodyTank.velocity = new Vector2(movement.x, movement.y);
-		//调试用
-		// x = this.transform.rotation.z;
-		// x = (float)Math.Cos(Math.PI * this.transform.rotation.eulerAngles.z / 180.0f);
-		// y = (float)Math.Sin(Math.PI * this.transform.rotation.eulerAngles.z / 180.0f);
+	}
+
+	public void UpdateHealth()
+	{
+		Health -= 34;
+		if (Health < 0)
+		{
+			Destroy(this.gameObject);
+		}
 	}
 }
