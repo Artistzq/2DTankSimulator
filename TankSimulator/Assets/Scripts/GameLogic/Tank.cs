@@ -9,7 +9,13 @@ public class Tank : MonoBehaviour
 	// public GameObject tank;
 	[Header("控制者")]
 	public Ctrller ctrller;		//是否为玩家
-	public float Health = 100;
+	[Header("装甲厚度：x为前甲，y为后甲")]
+	public Vector2 health;
+	public Vector2 healthPre;	//预设装甲厚度
+	[Header("反应装甲起作用的概率")]
+	public float armor;
+	[Header("各装甲脆弱成度")]
+	public Vector2 damage;
 	Vector3 movement;
 	[Header("移动速度")]
 	public float moveSpeed;
@@ -17,15 +23,21 @@ public class Tank : MonoBehaviour
 	public Vector3 rotateSpeed = new Vector3(0,0,1);
 	// public Vector3 force;
 	
-	Rigidbody2D rigidbodyTank;
+	Rigidbody2D rigidbodyTank;			//负责碰撞
+	Rigidbody2D rigidbodyFrontAmour;	//前装甲，负责炮弹击中碰撞
+	Rigidbody2D rigidbodyBackAmour;		//后装甲
+
 	void Start () 
-	{
+	{	
+		health = healthPre;
 		// tank = GameObject.Find("Tank");
 		rigidbodyTank = this.transform.GetComponent<Rigidbody2D>();
+		this.transform.rotation = Quaternion.Euler(0,0,90);
 	}
 	
 	private void FixedUpdate() 
 	{
+		// Debug.Log(this.transform.rotation.eulerAngles.z);
 		switch (ctrller)
 		{
 			case Ctrller.player:		//1号玩家坦克操控，键盘+鼠标操控
@@ -36,8 +48,8 @@ public class Tank : MonoBehaviour
 			break;
 
 			case Ctrller.wingman: 
-				float rotate2 = -Input.GetAxis("Horizontal2");	//返回-1到1的实数值,水平按键AD代表旋转量
-				float move2 = Input.GetAxis("Vertical2");			//WS代表移动量
+				float rotate2 = -Input.GetAxis("Horizontal2");	//返回-1到1的实数值,方向键左右代表旋转量
+				float move2 = Input.GetAxis("Vertical2");			//方向键上下代表移动量
 				Move(rotate2, move2);
 			break;
 		}	
@@ -54,10 +66,17 @@ public class Tank : MonoBehaviour
 		rigidbodyTank.velocity = new Vector2(movement.x, movement.y);
 	}
 
-	public void UpdateHealth()
+	public void UpdateHealth(bool isFront)
 	{
-		Health -= 34;
-		if (Health < 0)
+		if (isFront)				//前装甲被击中，health.x减少damage.x血量
+		{	
+			health = new Vector2(health.x - damage.x, health.y);
+		}
+		else						//后装甲集中，减少damage.y血量
+		{
+			health = new Vector2(health.x, health.y - damage.y);
+		}
+		if (health.x <0 || health.y <0)
 		{
 			Destroy(this.gameObject);
 		}
