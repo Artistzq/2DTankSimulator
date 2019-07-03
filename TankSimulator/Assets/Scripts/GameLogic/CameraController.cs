@@ -33,10 +33,9 @@ public class CameraController : MonoBehaviour {
 			);
 		}
 			
-		// if (Vector2.Distance(pos_1, pos_2) > ) //当两物之间距离大于，或小于，相机大小随之变化
+		// if ( Vector2.Distance(pos_1, pos_2) > )
 		// {
 			
 		// }
-
 	}
 }

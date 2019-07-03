@@ -12,7 +12,8 @@ public enum Ctrller
 {
 	enemy,		//敌人（电脑）
 	player,		//主玩家（如果只有一个玩家）
-	wingman		//二号坦克
+	wingman,	//二号坦克
+	destroyed	//被摧毁
 }
 
 public class PressButton

@@ -6,15 +6,17 @@ using UnityEngine;
 using System;
 
 public class Cannonball : MonoBehaviour {
-
-	public float flySpeed;
+	private float flySpeed;
 	private Vector3 movement;
-	private GameObject tank;	
+	public Tank tank;	
 	Rigidbody2D rigidbodyBullet;
 	
 	private void Start() 
 	{
 		rigidbodyBullet = this.transform.GetComponent<Rigidbody2D>();
+		tank = this.transform.parent.gameObject.GetComponent<Tank>();				//从该脚本挂载的物体（子弹）的父物体（Player或Wingman，两玩家之一）获取tank脚本
+
+		flySpeed = tank.bulletSpeed;									//从Tank脚本得到炮弹速度
 		Invoke("BallDestroy", 2);										//该脚本挂载的物体（即炮弹）实例化2秒后，销毁物体
 	}
 

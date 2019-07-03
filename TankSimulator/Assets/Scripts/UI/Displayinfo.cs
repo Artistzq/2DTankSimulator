@@ -27,8 +27,10 @@ public class Displayinfo : MonoBehaviour {
 	
 	void Update () 
 	{
-		//该脚本挂在物体的第一个字物体：装填状态
-		//的图像填充程度，随炮塔冷却而变化
+		//显示的信息
+
+		//第一个字物体：装填状态
+		//图像填充程度随炮塔冷却而变化
 		//turret.cooldown / turret.reloadTime保证最大值为1
 		this.transform.GetChild(0).GetComponent<Image>().fillAmount = 1 - Math.Abs(turret.cooldown / turret.reloadTime);
 
@@ -40,5 +42,18 @@ public class Displayinfo : MonoBehaviour {
 
 		//第四个物体，数字显示前后装甲
 		this.transform.GetChild(3).GetComponent<Text>().text = "前甲：" + tank.health.x.ToString() + " 后甲：" + tank.health.y;
+
+		//第五个物体，数字显示装填时间
+		this.transform.GetChild(4).GetComponent<Text>().text = "装填时间：" + turret.reloadTime.ToString();
+
+		//第六个物体，数字炮弹速度
+		this.transform.GetChild(5).GetComponent<Text>().text = "炮弹速度：" + (tank.bulletSpeed * 50).ToString() + "m/s";
+
+		//第七个物体（信息），数字炮弹数量
+		this.transform.GetChild(6).GetComponent<Text>().text = tank.bulletNum.ToString();
+	}
+
+	public void GetTank()
+	{
 	}
 }

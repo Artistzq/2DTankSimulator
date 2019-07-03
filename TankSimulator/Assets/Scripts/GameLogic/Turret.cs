@@ -4,26 +4,25 @@ using UnityEngine;
 
 public class Turret : MonoBehaviour {
 
-	private GameObject cannonBall;	//炮弹
-	private Ctrller ctrller;		//控制者
-	[Header("炮塔旋转速度(表现为惯性，越小越明显)")]
-	public float rotateSpeed;		//炮塔旋转速度
+	// [Header("炮塔旋转速度(表现为惯性，越小越明显)")]
+	// public float rotateSpeed;					//炮塔旋转速度
 	[Header("炮塔旋转增量")]
-	public float rotateDelta;		//炮塔旋转增量
-	// public List<GameObject> cannonBalls;	//子弹
+	public float rotateDelta;						//炮塔旋转增量
 	[Header("装填时间")]
-	public float reloadTime = 3.0f;		//预设装填时间
-	public bool canAttack	//属性，是否能攻击,当冷却小于0，就可攻击
+	public float reloadTime = 3.0f;					//预设装填时间
+	public bool canAttack							//属性，是否能攻击,当冷却小于0，就可攻击
 	{
 		get{return cooldown <= 0.0f;}
 	}
-
 	[HideInInspector]			//编辑器中不可见
-	public float cooldown;		//冷却时间，每次开火时被置为reloadTime, 当期大于0，每帧减取time.deltatime。
-	private Transform turret;	//物体：炮塔
-	private Transform muzzle;	//物体：火焰
-	Quaternion targetRotation;	//炮塔目标角度(四元数表示)
-	private float targetAngle;		//炮塔目标角度（度数）
+	public float cooldown;							//冷却时间，每次开火时被置为reloadTime, 当期大于0，每帧减取time.deltatime。
+
+	private GameObject cannonBall;					//炮弹
+	private Ctrller ctrller;						//控制者
+	private Transform turret;						//物体：炮塔
+	private Transform muzzle;						//物体：火焰
+	private Quaternion targetRotation;				//炮塔目标角度(四元数表示)
+	private float targetAngle;						//炮塔目标角度（度数）
 	
 
 	void Start () 
@@ -75,7 +74,7 @@ public class Turret : MonoBehaviour {
 	{
 		if (input)			//如果按下了对应的按键
 		{
-			if (canAttack)		//且装填完毕，可以攻击
+			if (canAttack && this.transform.GetComponent<Tank>().bulletNum > 0)		//且装填完毕且有子弹，可以攻击
 			{
 				cooldown = reloadTime;									//开始装填
 				muzzle.gameObject.SetActive(true);						//打开火焰
@@ -85,14 +84,15 @@ public class Turret : MonoBehaviour {
 					muzzle.position + new Vector3(0,0,-2),
 					turret.rotation
 				);
-				newBullet.transform.SetParent(this.transform.parent);	//为子弹设定父级transform
+				newBullet.transform.SetParent(this.transform);	//为子弹设定父级transform，为Player或者Wingman
 				
 				newBullet.transform.localScale = new Vector3(			//为子弹设定相对父级的比例，手动调整得到参数
-					0.2f * this.transform.localScale.x, 
-					0.2f * this.transform.localScale.y, 
-					1 * this.transform.parent.localScale.z);
+					this.transform.localScale.x, 
+					this.transform.localScale.y, 
+					this.transform.parent.localScale.z);
 
-				this.GetComponent<AudioSource>().Play();				//播放发射音效
+				this.transform.GetComponent<Tank>().bulletNum --;		//坦克炮弹减1
+				turret.GetComponent<AudioSource>().Play();				//播放发射音效
 				Invoke("FireClose", 0.1f);								//延时0.1s关闭火焰
 			}
 		}
