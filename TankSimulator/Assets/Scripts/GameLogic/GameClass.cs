@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// 表示方向的枚举类型
+/// </summary>
 public enum Direction
 {
 	forWard,		//向前
@@ -8,6 +11,9 @@ public enum Direction
 	rightTurn		//向右转
 }
 
+/// <summary>
+/// 表示控制器的枚举类型
+/// </summary>
 public enum Ctrller
 {
 	enemy,		//敌人（电脑）
@@ -16,44 +22,15 @@ public enum Ctrller
 	destroyed	//被摧毁
 }
 
-public class PressButton
+public enum Difficulty
 {
-	public KeyCode Forward{get; set;}
-	public KeyCode Backward{get; set;}
-	public KeyCode Letfturn{get; set;}
-	public KeyCode Rightturn{get; set;}
-	public KeyCode Reload{get; set;}
-
-
-}
-
-public class PlayerController : PressButton
-{
-	public string Fire;
-	public PlayerController()
-	{
-		Forward = KeyCode.W;
-		Backward = KeyCode.S;
-		Letfturn = KeyCode.A;
-		Rightturn = KeyCode.D;
-		Reload = KeyCode.R;
-	}
-}
-
-public class WingmanController : PressButton
-{
-	
-}
-
-public enum bullet
-{
-	enemy,
-	player,
-	wingman
+	easy,			//简单
+	medium,			//中等
+	hard			//困难
 }
 
 //皮肤类
-[System.Serializable]
+[System.Serializable]	//编辑面板可见此类
 public class SkinClass
 {
 	public Sprite bodySkin;		//车体皮肤

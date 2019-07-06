@@ -1,12 +1,12 @@
 ﻿//显示坦克的各项信息, 此脚本挂载在UI的坦克信息面板上
-//信息面板第一个子物体为装填冷却时间图像
 
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Displayinfo : MonoBehaviour {
+public class Displayinfo : MonoBehaviour 
+{
 
 	[Header("坦克")]
 	public GameObject Vehicle;				//载具，手动拖动, 存有载具的数据的脚本，几乎都存在此物体上,如下
@@ -41,16 +41,29 @@ public class Displayinfo : MonoBehaviour {
 		this.transform.GetChild(2).GetComponent<Image>().fillAmount = tank.health.y / tank.healthPre.y;
 
 		//第四个物体，数字显示前后装甲
-		this.transform.GetChild(3).GetComponent<Text>().text = "前甲：" + tank.health.x.ToString() + " 后甲：" + tank.health.y;
+		this.transform.GetChild(3).GetComponent<Text>().text = "前装甲完整度：" + tank.health.x.ToString() + " 后装甲完整度：" + tank.health.y;
 
 		//第五个物体，数字显示装填时间
-		this.transform.GetChild(4).GetComponent<Text>().text = "装填时间：" + turret.reloadTime.ToString();
+		this.transform.GetChild(4).GetComponent<Text>().text = "装填时间：" + turret.reloadTime.ToString() + "秒";
 
 		//第六个物体，数字炮弹速度
-		this.transform.GetChild(5).GetComponent<Text>().text = "炮弹速度：" + (tank.bulletSpeed * 50).ToString() + "m/s";
+		this.transform.GetChild(5).GetComponent<Text>().text = "炮弹速度：" + (tank.bulletSpeed * 50).ToString() + "米/秒";
 
 		//第七个物体（信息），数字炮弹数量
 		this.transform.GetChild(6).GetComponent<Text>().text = tank.bulletNum.ToString();
+
+		//第八个物体（信息），炮塔转速
+		this.transform.GetChild(7).GetComponent<Text>().text = "炮塔转速" + (35 * turret.rotateDelta).ToString() + "度/秒";
+
+		//第九个物体（信息），坦克移速
+		this.transform.GetChild(8).GetComponent<Text>().text = "坦克移速等级：" + (tank.moveSpeed * 10).ToString();
+
+		//第十个物体（信息），坦克转速
+		this.transform.GetChild(9).GetComponent<Text>().text = "坦克转速等级："	+ (tank.rotateSpeed.z * 10).ToString();
+		
+		//第十一个物体（信息），剩余重生次数
+		this.transform.GetChild(10).GetComponent<Text>().text = "剩余：" + tank.remainChance.ToString() + "次重生";
+
 	}
 
 	public void GetTank()

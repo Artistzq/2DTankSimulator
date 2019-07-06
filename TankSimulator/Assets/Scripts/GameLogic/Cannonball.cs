@@ -15,14 +15,16 @@ public class Cannonball : MonoBehaviour {
 	{
 		rigidbodyBullet = this.transform.GetComponent<Rigidbody2D>();
 		tank = this.transform.parent.gameObject.GetComponent<Tank>();				//从该脚本挂载的物体（子弹）的父物体（Player或Wingman，两玩家之一）获取tank脚本
-
+		this.transform.SetParent(this.transform.parent.parent);
+		this.transform.localScale = new Vector3(0.05f, 0.05f, 1);
 		flySpeed = tank.bulletSpeed;									//从Tank脚本得到炮弹速度
+		BulletMove();
 		Invoke("BallDestroy", 2);										//该脚本挂载的物体（即炮弹）实例化2秒后，销毁物体
 	}
 
 	private void Update() 
 	{
-		BulletMove();
+		// BulletMove();
 	}
 
 	public void BulletMove()
@@ -33,6 +35,7 @@ public class Cannonball : MonoBehaviour {
 			0
 		);
 		rigidbodyBullet.velocity = new Vector2(movement.x, movement.y);
+		// rigidbodyBullet.AddForce(new Vector2(movement.x, movement.y));
 	}
 
 	private void OnCollisionEnter2D(Collision2D other) 

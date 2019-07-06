@@ -45,6 +45,7 @@ public class Turret : MonoBehaviour {
 
 	void FixedUpdate () 
 	{
+		ctrller = this.GetComponent<Tank>().ctrller;	//同步炮塔的控制者为坦克控制者
 		switch (ctrller)
 		{
 			case Ctrller.player:
@@ -84,13 +85,13 @@ public class Turret : MonoBehaviour {
 					muzzle.position + new Vector3(0,0,-2),
 					turret.rotation
 				);
-				newBullet.transform.SetParent(this.transform);	//为子弹设定父级transform，为Player或者Wingman
+				newBullet.transform.SetParent(this.transform);			//为子弹设定父级transform，为Player或者Wingman
 				
-				newBullet.transform.localScale = new Vector3(			//为子弹设定相对父级的比例，手动调整得到参数
-					this.transform.localScale.x, 
-					this.transform.localScale.y, 
-					this.transform.parent.localScale.z);
-
+				// newBullet.transform.localScale = new Vector3(			//为子弹设定相对父级的比例，手动调整得到参数
+				// 	this.transform.localScale.x, 
+				// 	this.transform.localScale.y, 
+				// 	this.transform.localScale.z);
+				
 				this.transform.GetComponent<Tank>().bulletNum --;		//坦克炮弹减1
 				turret.GetComponent<AudioSource>().Play();				//播放发射音效
 				Invoke("FireClose", 0.1f);								//延时0.1s关闭火焰
@@ -110,26 +111,45 @@ public class Turret : MonoBehaviour {
 		if(input1)
 		{
 			targetAngle += rotateDelta;
-			targetAngle = targetAngle % 360;
 			targetRotation = Quaternion.Euler(0, 0, targetAngle);
 		}
 		// 当input2为真，旋转目标角度targetAngle 减小 rotateDelta的大小
 		else if(input2)
 		{
 			targetAngle -= rotateDelta;
-			targetAngle = targetAngle % 360;
 			targetRotation = Quaternion.Euler(0, 0, targetAngle);
 		}
 		//若不滚动滚轮，目标角度维持不变，不进行角度变化操作
 		//else{ }	
 
 		//确定目标角度后，每一帧实现向目标角度（以父物体为参考系）的平滑转向
-		if (Quaternion.Angle(this.transform.localRotation, targetRotation) != 0 )
+		RotateTo(targetRotation);
+	}
+
+	/// <summary>
+	/// 以父级为坐标系，转到_targetRotation角度，即相对坦克物体的偏转角度
+	/// </summary>
+	/// <param name="_targetRotation"></param>
+	public void RotateTo(Quaternion _targetRotation)
+	{
+		if (Quaternion.Angle(this.transform.localRotation, _targetRotation) != 0 )
 		{
 			// Debug.Log(Quaternion.Angle(this.transform.localRotation, targetRotation));
 			turret.localRotation = Quaternion.Slerp(
 				turret.localRotation,
-				targetRotation,
+				_targetRotation,
+				rotateDelta * Time.deltaTime
+			);	
+		}
+	}
+
+	public void RotateInWorld(Quaternion _targetRotation)
+	{
+		if (Quaternion.Angle(this.transform.localRotation, _targetRotation) != 0 )
+		{
+			turret.rotation = Quaternion.Slerp(
+				turret.rotation,
+				_targetRotation,
 				rotateDelta * Time.deltaTime
 			);	
 		}
