@@ -21,18 +21,3 @@ public enum Ctrller
 	wingman,	//二号坦克
 	destroyed	//被摧毁
 }
-
-public enum Difficulty
-{
-	easy,			//简单
-	medium,			//中等
-	hard			//困难
-}
-
-//皮肤类
-[System.Serializable]	//编辑面板可见此类
-public class SkinClass
-{
-	public Sprite bodySkin;		//车体皮肤
-	public Sprite turretSkin;	//炮塔皮肤
-}

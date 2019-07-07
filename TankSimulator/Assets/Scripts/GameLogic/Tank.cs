@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class Tank : MonoBehaviour 
 {
-	// public GameObject tank;
 	[Header("控制者")]
 	public Ctrller ctrller;		//是否为玩家
 
@@ -135,7 +134,6 @@ public class Tank : MonoBehaviour
 				Invoke("DepolyADestroyedTank", 5);					//5秒后生成损坏车辆，并解冻复位
 			}
 		}
-		
 	}
 
 	/// <summary>

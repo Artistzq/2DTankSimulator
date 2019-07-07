@@ -10,12 +10,12 @@ public class Turret : MonoBehaviour {
 	public float rotateDelta;						//炮塔旋转增量
 	[Header("装填时间")]
 	public float reloadTime = 3.0f;					//预设装填时间
-	public bool canAttack							//属性，是否能攻击,当冷却小于0，就可攻击
+	public bool canAttack							//属性，是否能攻击,当冷却时间小于0，就可攻击，值为真
 	{
 		get{return cooldown <= 0.0f;}
 	}
 	[HideInInspector]			//编辑器中不可见
-	public float cooldown;							//冷却时间，每次开火时被置为reloadTime, 当期大于0，每帧减取time.deltatime。
+	public float cooldown;							//冷却时间，每次开火时被置为reloadTime, 当其大于0，每帧减取time.deltatime。
 
 	private GameObject cannonBall;					//炮弹
 	private Ctrller ctrller;						//控制者
@@ -51,20 +51,18 @@ public class Turret : MonoBehaviour {
 			case Ctrller.player:
 				//player开火设定
 				// Fire(Input.GetButtonDown("Fire1"));
-				Fire(Input.GetKeyDown(KeyCode.K));
+				Fire(Input.GetKeyDown(KeyCode.K));//按下了K键
 				//player转向设定
-				// RotateTurret(Input.GetAxisRaw("Mouse ScrollWheel") > 0, Input.GetAxisRaw("Mouse ScrollWheel") < 0 );
 			 	RotateTurret(Input.GetKey(KeyCode.J), Input.GetKey(KeyCode.L));
 			break;
 
 			case Ctrller.wingman:
 				//wingman开火
-				Fire(Input.GetKeyDown(KeyCode.Keypad2));
+				Fire(Input.GetKeyDown(KeyCode.Keypad2));//按下了小键盘2键
 				//wingman转向
 			 	RotateTurret(Input.GetKey(KeyCode.Keypad1), Input.GetKey(KeyCode.Keypad3));
 			break;
 		}
-		
 	}
 
 	/// <summary>

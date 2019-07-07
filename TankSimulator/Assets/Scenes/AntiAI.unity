@@ -5664,6 +5664,10 @@ Prefab:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1045809754111340, guid: 94c74cac3c59cf446a62e68952ef9159, type: 2}
+      propertyPath: m_Name
+      value: "CannonBalls \u70AE\u5F39"
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94c74cac3c59cf446a62e68952ef9159, type: 2}
   m_IsPrefabAsset: 0

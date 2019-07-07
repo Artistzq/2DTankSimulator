@@ -65,8 +65,4 @@ public class Displayinfo : MonoBehaviour
 		this.transform.GetChild(10).GetComponent<Text>().text = "剩余：" + tank.remainChance.ToString() + "次重生";
 
 	}
-
-	public void GetTank()
-	{
-	}
 }
