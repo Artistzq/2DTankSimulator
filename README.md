@@ -6,4 +6,5 @@
  * @LastEditors: Please set LastEditors
  -->
 # TankSimulator 坦克模拟器
-自制坦克大战，2D对战小游戏，使用Unity游戏引擎制作。只包含源码和必要组件，无法直接运行，需要用unity3D打开。
+自制坦克大战，2D对战小游戏，使用Unity游戏引擎制作。
+[下载](https://github.com/Artistzq/2DTankSimulator/releases)
